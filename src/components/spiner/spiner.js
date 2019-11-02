@@ -3,7 +3,7 @@ import React from 'react';
 import './spiner.css';
 
 const Spiner = () => {
-  return <h2>Spiner</h2>;
+  return <h2>Loading...</h2>;
 };
 
 export default Spiner;

@@ -5,7 +5,7 @@ import TodoListItem from '../todo-list-item';
 
 const TodoList = () => {
   return (
-    <ul>
+    <ul className="list-group todo-list">
       <TodoListItem />
       <TodoListItem />
       <TodoListItem />
