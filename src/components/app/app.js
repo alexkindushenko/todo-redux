@@ -11,12 +11,11 @@ class App extends Component {
   render() {
     return (
       <div className="todo-app">
-        <Header toDo={0} done={0} />
+        <Header />
         <div className="top-panel d-flex">
           <SearchPanel />
           <ItemStatusFilter />
         </div>
-
         <TodoList />
         <ItemAddForm />
       </div>

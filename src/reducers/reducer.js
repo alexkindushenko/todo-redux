@@ -1,14 +1,10 @@
-const initialState = {
-  list: [],
-  loading: true,
-  error: null,
-};
+import updateTodoList from './update-todo-list';
 
-const reducer = (state = initialState, action) => {
+const reducer = (state, action) => {
   console.log(action.type);
-  switch (action.type) {
-    default:
-      return state;
-  }
+  return {
+    todoList: updateTodoList(state, action),
+    // filterList: filterList(state, action),
+  };
 };
 export default reducer;

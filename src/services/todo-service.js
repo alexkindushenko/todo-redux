@@ -2,19 +2,19 @@ export default class TodoService {
   data = [
     {
       id: 1,
-      title: 'drink coffee',
+      label: 'drink coffee',
       done: false,
       important: false,
     },
     {
       id: 2,
-      title: 'make avesome react app',
+      label: 'make avesome react app',
       important: true,
       done: false,
     },
     {
-      id: 2,
-      title: 'to byu book "release it!"',
+      id: 3,
+      label: 'to byu book "release it!"',
       important: false,
       done: false,
     },
