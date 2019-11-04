@@ -1,16 +1,24 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './header.css';
 
-const Header = ({ toDo = 0, done = 0 }) => {
+const Header = ({ todo, done }) => {
   return (
     <div className="app-header d-flex">
       <h1>Todo List</h1>
       <h2>
-        {toDo} more to do, {done} done
+        {todo} more to do, {done} done
       </h2>
     </div>
   );
 };
 
-export default Header;
+const mapStateToProps = ({ active, doneCount }) => {
+  return {
+    todo: active,
+    done: doneCount,
+  };
+};
+
+export default connect(mapStateToProps)(Header);

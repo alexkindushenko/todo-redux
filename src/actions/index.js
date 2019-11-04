@@ -24,4 +24,43 @@ const fetchList = todoService => () => dispatch => {
     .catch(err => dispatch(listError(err)));
 };
 
-export { fetchList };
+const itemAddToList = id => {
+  return {
+    type: 'ITEM_ADD_TO_LIST',
+    payload: id,
+  };
+};
+const itemRemuveFromList = id => {
+  return {
+    type: 'ITEM_REMUVE_FROM_LIST',
+    payload: id,
+  };
+};
+
+const updateImportantItem = id => {
+  return {
+    type: 'UPDATE_IMPORTANT_ITEM',
+    payload: id,
+  };
+};
+
+const updateDoneItem = id => {
+  return {
+    type: 'UPDATE_DONE_ITEM',
+    payload: id,
+  };
+};
+const updateDoneCount = () => {
+  return {
+    type: 'UPDATE_DONE_COUNT',
+  };
+};
+
+export {
+  fetchList,
+  itemAddToList,
+  itemRemuveFromList,
+  updateDoneCount,
+  updateImportantItem,
+  updateDoneItem,
+};

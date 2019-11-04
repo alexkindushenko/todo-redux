@@ -3,8 +3,8 @@ export default class TodoService {
     {
       id: 1,
       label: 'drink coffee',
-      done: false,
       important: false,
+      done: false,
     },
     {
       id: 2,
