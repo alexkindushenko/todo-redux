@@ -21,15 +21,17 @@ const fetchList = todoService => () => dispatch => {
   todoService
     .getList()
     .then(data => dispatch(listLoaded(data)))
+    .then(data => dispatch(updateDoneCount()))
     .catch(err => dispatch(listError(err)));
 };
 
-const itemAddToList = id => {
+const itemAddToList = str => {
   return {
     type: 'ITEM_ADD_TO_LIST',
-    payload: id,
+    payload: str,
   };
 };
+
 const itemRemuveFromList = id => {
   return {
     type: 'ITEM_REMUVE_FROM_LIST',

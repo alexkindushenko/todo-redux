@@ -16,7 +16,7 @@ export default class TodoService {
       id: 3,
       label: 'to byu book "release it!"',
       important: false,
-      done: false,
+      done: true,
     },
   ];
 

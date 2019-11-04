@@ -1,5 +1,3 @@
-// import updateTodoList from './update-todo-list';
-// import updateFilterList from './update-filter-list';
 const itemRemuveFromList = (id, state) => {
   return {
     ...state,
@@ -7,7 +5,20 @@ const itemRemuveFromList = (id, state) => {
   };
 };
 
-const itemAddToList = (id, state) => {};
+const itemAddToList = (str, state) => {
+  return {
+    ...state,
+    list: [
+      ...state.list,
+      {
+        id: Math.floor(Math.random() * 1000),
+        label: str,
+        important: false,
+        done: false,
+      },
+    ],
+  };
+};
 
 const updateImportantItem = (id, state) => {
   return {
@@ -22,15 +33,25 @@ const updateDoneItem = (id, state) => {
   return {
     ...state,
     list: state.list.map(el => (el.id === id ? { ...el, done: !el.done } : el)),
+    active: state.list.length - state.list.filter(el => el.done).length,
+    doneCount: state.list.filter(el => el.done).length,
   };
 };
-const updateDoneCount = state => {};
+
+const updateDoneCount = state => {
+  return {
+    ...state,
+    doneCount: state.list.filter(el => el.done).length,
+    active: state.list.length - state.list.filter(el => el.done).length,
+  };
+};
 
 const initialState = {
   list: [],
   doneCount: 0,
   loading: true,
   error: null,
+  active: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -46,7 +67,6 @@ const reducer = (state = initialState, action) => {
       };
     case 'FETCH_LIST_SUCCESS':
       return {
-        ...state,
         list: action.payload,
         loading: false,
         error: null,
