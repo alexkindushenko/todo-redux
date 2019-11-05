@@ -32,6 +32,13 @@ const itemAddToList = str => {
   };
 };
 
+const searchItemInList = str => {
+  return {
+    type: 'SEARCH_ITEM_IN_LIST',
+    payload: str,
+  };
+};
+
 const itemRemuveFromList = id => {
   return {
     type: 'ITEM_REMUVE_FROM_LIST',
@@ -65,4 +72,5 @@ export {
   updateDoneCount,
   updateImportantItem,
   updateDoneItem,
+  searchItemInList,
 };

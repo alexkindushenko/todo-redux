@@ -46,12 +46,23 @@ const updateDoneCount = state => {
   };
 };
 
+const searchItemInList = (str, state) => {
+  state.list = state.generalList;
+  return {
+    ...state,
+    list: state.list.filter(el =>
+      el.label.toLowerCase().includes(str.toLowerCase())
+    ),
+  };
+};
+
 const initialState = {
   list: [],
   doneCount: 0,
   loading: true,
   error: null,
   active: 0,
+  generalList: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -64,12 +75,14 @@ const reducer = (state = initialState, action) => {
         list: [],
         loading: true,
         error: null,
+        generalList: [],
       };
     case 'FETCH_LIST_SUCCESS':
       return {
         list: action.payload,
         loading: false,
         error: null,
+        generalList: action.payload,
       };
     case 'FETCH_LIST_FAILURE':
       return {
@@ -92,6 +105,8 @@ const reducer = (state = initialState, action) => {
 
     case 'UPDATE_DONE_COUNT':
       return updateDoneCount(state);
+    case 'SEARCH_ITEM_IN_LIST':
+      return searchItemInList(action.payload, state);
 
     default:
       return state;

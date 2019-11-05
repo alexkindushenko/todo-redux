@@ -40,13 +40,12 @@ class ItemAddForm extends React.Component {
     );
   }
 }
-const a = () => ({});
 
 const mapDispachToProps = {
   onItemAddToList: itemAddToList,
 };
 
 export default connect(
-  a,
+  () => ({}),
   mapDispachToProps
 )(ItemAddForm);
