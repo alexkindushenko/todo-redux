@@ -11,23 +11,26 @@ const itemRemuveFromList = (id, state) => {
     list: state.list.filter(el => el.id !== id),
     active: state.list.length - state.doneCount - rateActive,
     doneCount: state.list.filter(el => el.done).length - rateDone,
+    generalList: state.list.filter(el => el.id !== id),
   };
 };
 
 const itemAddToList = (str, state) => {
   const id = Math.floor(Math.random() * 1000);
+  const newList = [
+    ...state.list,
+    {
+      id,
+      label: str,
+      important: false,
+      done: false,
+    },
+  ];
   return {
     ...state,
-    list: [
-      ...state.list,
-      {
-        id,
-        label: str,
-        important: false,
-        done: false,
-      },
-    ],
+    list: newList,
     active: state.list.length,
+    generalList: newList,
   };
 };
 
