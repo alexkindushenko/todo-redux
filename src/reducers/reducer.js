@@ -1,22 +1,33 @@
 const itemRemuveFromList = (id, state) => {
+  let rateDone = 0;
+  let rateActive = 1;
+  const elem = state.list.filter(el => el.id === id);
+  if (elem[0].done) {
+    rateDone = 1;
+    rateActive = 0;
+  }
   return {
     ...state,
     list: state.list.filter(el => el.id !== id),
+    active: state.list.length - state.doneCount - rateActive,
+    doneCount: state.list.filter(el => el.done).length - rateDone,
   };
 };
 
 const itemAddToList = (str, state) => {
+  const id = Math.floor(Math.random() * 1000);
   return {
     ...state,
     list: [
       ...state.list,
       {
-        id: Math.floor(Math.random() * 1000),
+        id,
         label: str,
         important: false,
         done: false,
       },
     ],
+    active: state.list.length,
   };
 };
 
@@ -30,11 +41,16 @@ const updateImportantItem = (id, state) => {
 };
 
 const updateDoneItem = (id, state) => {
+  let rateDone = 1;
+  const elem = state.list.filter(el => el.id === id);
+  if (elem[0].done) {
+    rateDone = -1;
+  }
   return {
     ...state,
     list: state.list.map(el => (el.id === id ? { ...el, done: !el.done } : el)),
-    active: state.list.length - state.list.filter(el => el.done).length,
-    doneCount: state.list.filter(el => el.done).length,
+    active: state.list.length - state.doneCount - rateDone,
+    doneCount: state.list.filter(el => el.done).length + rateDone,
   };
 };
 
