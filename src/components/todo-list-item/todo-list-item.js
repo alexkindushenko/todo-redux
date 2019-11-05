@@ -11,15 +11,15 @@ const TodoListItem = ({
   onImportantItem,
   onRemoveFromList,
 }) => {
-  let clazz = 'list-group-item todo-list-item';
+  let clazz = 'list-group-item todo-list-item d-flex';
   if (done) {
-    clazz = 'list-group-item todo-list-item done';
+    clazz = 'list-group-item todo-list-item d-flex done';
   }
   if (important) {
-    clazz = 'list-group-item todo-list-item important';
+    clazz = 'list-group-item todo-list-item d-flex important';
   }
   if (done && important) {
-    clazz = 'list-group-item todo-list-item done important';
+    clazz = 'list-group-item todo-list-item done d-flex important';
   }
   return (
     <li className={clazz} id={id}>
@@ -28,14 +28,14 @@ const TodoListItem = ({
       </span>
       <button
         type="button"
-        className="btn btn-outline-success btn-sm float-right"
+        className="btn btn-outline-success btn-sm "
         onClick={onImportantItem}
       >
         <i className="fa fa-exclamation" />
       </button>
       <button
         type="button"
-        className="btn btn-outline-danger btn-sm float-right"
+        className="btn btn-outline-danger btn-sm "
         onClick={onRemoveFromList}
       >
         <i className="fa fa-trash-o" />
