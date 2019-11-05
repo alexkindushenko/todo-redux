@@ -59,9 +59,28 @@ const updateDoneItem = id => {
     payload: id,
   };
 };
+
 const updateDoneCount = () => {
   return {
     type: 'UPDATE_DONE_COUNT',
+  };
+};
+
+const filterListAll = () => {
+  return {
+    type: 'FILTER_LIST_UPDATE',
+  };
+};
+
+const filterListActive = () => {
+  return {
+    type: 'FILTER_LIST_ACTIVE',
+  };
+};
+
+const filterListDone = () => {
+  return {
+    type: 'FILTER_LIST_DONE',
   };
 };
 
@@ -73,4 +92,7 @@ export {
   updateImportantItem,
   updateDoneItem,
   searchItemInList,
+  filterListActive,
+  filterListAll,
+  filterListDone,
 };

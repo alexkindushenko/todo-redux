@@ -75,6 +75,29 @@ const searchItemInList = (str, state) => {
   };
 };
 
+const filterListDone = state => {
+  state.list = state.generalList;
+  return {
+    ...state,
+    list: state.list.filter(el => el.done),
+  };
+};
+
+const filterListAll = state => {
+  return {
+    ...state,
+    list: state.generalList,
+  };
+};
+
+const filterListActive = state => {
+  state.list = state.generalList;
+  return {
+    ...state,
+    list: state.list.filter(el => !el.done),
+  };
+};
+
 const initialState = {
   list: [],
   doneCount: 0,
@@ -126,6 +149,12 @@ const reducer = (state = initialState, action) => {
       return updateDoneCount(state);
     case 'SEARCH_ITEM_IN_LIST':
       return searchItemInList(action.payload, state);
+    case 'FILTER_LIST_UPDATE':
+      return filterListAll(state);
+    case 'FILTER_LIST_ACTIVE':
+      return filterListActive(state);
+    case 'FILTER_LIST_DONE':
+      return filterListDone(state);
 
     default:
       return state;
