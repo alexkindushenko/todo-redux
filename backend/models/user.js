@@ -17,11 +17,13 @@ module.exports = model(
         label: String,
         done: {
           type: Boolean,
+          required: true,
           default: false,
         },
         important: {
           type: Boolean,
           default: false,
+          required: true,
         },
       },
     ],

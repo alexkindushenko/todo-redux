@@ -13,6 +13,13 @@ const store = new MongoStore({
   uri: MONGODB_URI,
 });
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  next();
+});
+
 app.use(
   session({
     secret: 'secret key11',
@@ -32,7 +39,7 @@ app.all('*', function(req, res, next) {
   res.cookie('XSRF-TOKEN', req.csrfToken()); // X-XSRF-TOKEN
   next();
 });
-
+app.use('/', require('./routes/home'));
 app.use('/login', require('./routes/login'));
 app.use('/register', require('./routes/register'));
 

@@ -5,7 +5,7 @@ const UserSchema = require('../models/user');
 const router = Router();
 
 router.get('/', (req, res) => {
-  res.json({ message: 'Hello World' });
+  res.json({ message: 'login page' });
 });
 
 router.post('/', async (req, res) => {
@@ -29,11 +29,11 @@ router.post('/', async (req, res) => {
         });
       } else {
         console.log('Error login');
-        res.redirect('auth/login');
+        res.redirect('/login');
       }
     } else {
       console.log('Error register');
-      res.redirect('auth/register');
+      res.redirect('/register');
     }
   } catch (error) {
     console.log(error);

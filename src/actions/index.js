@@ -21,7 +21,7 @@ const fetchList = todoService => () => dispatch => {
   todoService
     .getList()
     .then(data => dispatch(listLoaded(data)))
-    .then(data => dispatch(updateDoneCount()))
+    .then(() => dispatch(updateDoneCount()))
     .catch(err => dispatch(listError(err)));
 };
 
