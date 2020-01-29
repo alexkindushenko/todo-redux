@@ -1,18 +1,20 @@
 const { Router } = require('express');
 const bcript = require('bcryptjs');
+const path = require('path');
+
 const UserSchema = require('../models/user');
 
 const router = Router();
 
-router.get('/', (req, res) => {
-  res.json({ message: 'login page' });
-});
+// router.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
+// });
 
 router.post('/', async (req, res) => {
   try {
     const { email, password } = req.body;
     const candidate = await UserSchema.findOne({ email });
-    console.log(candidate);
+    // console.log(candidate);
 
     if (candidate) {
       if (await bcript.compare(password, candidate.password)) {
@@ -23,8 +25,9 @@ router.post('/', async (req, res) => {
           if (err) {
             throw err;
           } else {
+            console.log(req.session.isAuthenticated);
             console.log('Hello login');
-            res.redirect('/');
+            res.json({ homeRedirect: true });
           }
         });
       } else {

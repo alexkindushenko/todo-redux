@@ -1,13 +1,17 @@
 const { Router } = require('express');
+const path = require('path');
+
 const UserSchema = require('../models/user');
 
 const router = Router();
 
 router.get('/', (req, res) => {
   if (!req.session.isAuthenticated) {
-    res.redirect('/login');
+    // res.sendFile(path.join(__dirname, 'build', 'index.html'));
+    res.json({ msg: 'no auth' });
   } else {
     res.json({ todos: req.session.user.todos });
+    // res.sendFile(path.join(__dirname, 'build', 'index.html'));
   }
   res.end();
 });

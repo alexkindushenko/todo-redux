@@ -84,6 +84,52 @@ const filterListDone = () => {
   };
 };
 
+const loginFormSubmitted = res => {
+  return {
+    type: 'SEND_LOGIN_FORM_SUCCESS',
+    payload: res,
+  };
+};
+
+const loginFormError = err => {
+  return {
+    type: 'SEND_LOGIN_FORM_FAILURE',
+    payload: err,
+  };
+};
+
+const sendLoginForm = (todoService, data) => () => dispatch => {
+  todoService
+    .sendLoginForm(data)
+    .then(res => {
+      console.log(res);
+      return dispatch(loginFormSubmitted(res));
+    })
+    .catch(err => dispatch(loginFormError(err)));
+};
+
+const registerFormSubmitted = data => {
+  return {
+    type: 'SEND_REGISTER_FORM_SUCCESS',
+    payload: data,
+  };
+};
+
+const registerFormError = err => {
+  return {
+    type: 'SEND_REGISTER_FORM_FAILURE',
+    payload: err,
+  };
+};
+
+const sendRegisterForm = (todoService, data) => () => dispatch => {
+  console.log(data);
+  todoService
+    .sendRegisterForm(data)
+    .then(res => dispatch(registerFormSubmitted(res)))
+    .catch(err => dispatch(registerFormError(err)));
+};
+
 export {
   fetchList,
   itemAddToList,
@@ -95,4 +141,6 @@ export {
   filterListActive,
   filterListAll,
   filterListDone,
+  sendLoginForm,
+  sendRegisterForm,
 };

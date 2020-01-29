@@ -98,6 +98,13 @@ const filterListActive = state => {
   };
 };
 
+const loginFormSubmitted = (res, state) => {
+  return {
+    ...state,
+    homeRedirect: res.data.homeRedirect,
+  };
+};
+
 const initialState = {
   list: [],
   doneCount: 0,
@@ -105,6 +112,7 @@ const initialState = {
   error: null,
   active: 0,
   generalList: [],
+  homeRedirect: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -155,6 +163,8 @@ const reducer = (state = initialState, action) => {
       return filterListActive(state);
     case 'FILTER_LIST_DONE':
       return filterListDone(state);
+    case 'SEND_LOGIN_FORM_SUCCESS':
+      return loginFormSubmitted(action.payload, state);
 
     default:
       return state;
