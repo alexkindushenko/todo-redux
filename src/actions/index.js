@@ -15,21 +15,33 @@ const listError = err => {
     payload: err,
   };
 };
-
 const fetchList = todoService => () => dispatch => {
   dispatch(listRequested());
   todoService
-    .getList()
-    .then(data => dispatch(listLoaded(data)))
+    .getTodoList()
+    .then(res => dispatch(listLoaded(res.data.todos)))
     .then(() => dispatch(updateDoneCount()))
     .catch(err => dispatch(listError(err)));
 };
 
-const itemAddToList = str => {
+const itemAddSuccess = res => {
   return {
-    type: 'ITEM_ADD_TO_LIST',
-    payload: str,
+    type: 'ITEM_ADD_SUCCESS',
+    payload: res,
   };
+};
+const itemAddError = err => {
+  return {
+    type: 'ITEM_ADD_FAILURE',
+    payload: err,
+  };
+};
+const addItem = (todoService, data) => () => dispatch => {
+  todoService
+    .addItem(data)
+    .then(res => dispatch(itemAddSuccess(res.data.todo)))
+    .then(() => dispatch(updateDoneCount()))
+    .catch(err => dispatch(itemAddError(err)));
 };
 
 const searchItemInList = str => {
@@ -101,10 +113,7 @@ const loginFormError = err => {
 const sendLoginForm = (todoService, data) => () => dispatch => {
   todoService
     .sendLoginForm(data)
-    .then(res => {
-      console.log(res);
-      return dispatch(loginFormSubmitted(res));
-    })
+    .then(res => dispatch(loginFormSubmitted(res)))
     .catch(err => dispatch(loginFormError(err)));
 };
 
@@ -130,9 +139,32 @@ const sendRegisterForm = (todoService, data) => () => dispatch => {
     .catch(err => dispatch(registerFormError(err)));
 };
 
+const deleteSuccess = res => {
+  return {
+    type: 'DELETE_SUCCESS',
+    payload: res,
+  };
+};
+
+const deleteError = err => {
+  return {
+    type: 'DELETE_FAILURE',
+    payload: err,
+  };
+};
+
+const deleteItem = (todoService, id) => () => dispatch => {
+  todoService
+    .deleteItem(id)
+    .then(res => dispatch(deleteSuccess(res)))
+    .then(() => dispatch(itemRemuveFromList(id)))
+    .catch(err => {
+      console.log(err);
+      return dispatch(deleteError(err));
+    });
+};
 export {
   fetchList,
-  itemAddToList,
   itemRemuveFromList,
   updateDoneCount,
   updateImportantItem,
@@ -143,4 +175,6 @@ export {
   filterListDone,
   sendLoginForm,
   sendRegisterForm,
+  deleteItem,
+  addItem,
 };

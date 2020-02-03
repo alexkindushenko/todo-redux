@@ -14,7 +14,6 @@ router.post('/', async (req, res) => {
   try {
     const { email, password } = req.body;
     const candidate = await UserSchema.findOne({ email });
-    // console.log(candidate);
 
     if (candidate) {
       if (await bcript.compare(password, candidate.password)) {
@@ -25,8 +24,6 @@ router.post('/', async (req, res) => {
           if (err) {
             throw err;
           } else {
-            console.log(req.session.isAuthenticated);
-            console.log('Hello login');
             res.json({ homeRedirect: true });
           }
         });

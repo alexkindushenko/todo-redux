@@ -1,6 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { itemAddToList } from '../../actions';
+import { bindActionCreators } from 'redux';
+
+import { withTodoService } from '../hoc';
+import { itemAddToList, addItem } from '../../actions';
 
 import './item-add-form.css';
 
@@ -16,7 +19,7 @@ class ItemAddForm extends React.Component {
     const addItem = e => {
       e.preventDefault();
       if (this.state.str) {
-        onItemAddToList(this.state.str);
+        onItemAddToList({ str: this.state.str });
         this.setState({ str: '' });
       }
     };
@@ -41,11 +44,18 @@ class ItemAddForm extends React.Component {
   }
 }
 
-const mapDispachToProps = {
-  onItemAddToList: itemAddToList,
+const mapDispachToProps = (dispatch, { todoService }) => {
+  return bindActionCreators(
+    {
+      onItemAddToList: str => dispatch(addItem(todoService, str)),
+    },
+    dispatch
+  );
 };
 
-export default connect(
-  () => ({}),
-  mapDispachToProps
-)(ItemAddForm);
+export default withTodoService()(
+  connect(
+    () => ({}),
+    mapDispachToProps
+  )(ItemAddForm)
+);

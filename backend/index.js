@@ -8,6 +8,8 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
 
+const UserSchema = require('./models/user');
+
 const PORT = process.env.port || 8888;
 const MONGODB_URI = 'mongodb://localhost:27017/todo-mern';
 const store = new MongoStore({
@@ -33,11 +35,13 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log(req.session);
-  res.locals.isAuth = req.session.isAuthenticated || false;
-  console.log(req.session.isAuthenticated);
-  console.log(req.isAuth);
+app.use(async (req, res, next) => {
+  req.session.user = await UserSchema.findById('5e346abb0753612ab83d8300');
+  req.session.isAuthenticated = true;
+  // res.locals.isAuth = req.session.isAuthenticated;
+  // res.locals.isAuth = true;
+  // console.log(req.session.isAuthenticated);
+  // console.log(req.session.user);
 
   next();
 });

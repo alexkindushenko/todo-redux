@@ -10,6 +10,7 @@ import {
   updateDoneItem,
   updateImportantItem,
   itemRemuveFromList,
+  deleteItem,
 } from '../../actions';
 import ErrorIndicator from '../error-indicator';
 import Spiner from '../spiner';
@@ -45,7 +46,7 @@ class TodoList extends React.Component {
               important={el.important}
               onDoneItem={() => onDoneItem(el.id)}
               onImportantItem={() => onImportantItem(el.id)}
-              onRemoveFromList={() => onRemoveFromList(el.id)}
+              onRemoveFromList={() => onRemoveFromList({ id: el.id })}
             />
           ))}
         </ul>
@@ -68,7 +69,7 @@ const mapDispachToProps = (dispatch, { todoService }) => {
       fetchList: fetchList(todoService),
       onImportantItem: updateImportantItem,
       onDoneItem: updateDoneItem,
-      onRemoveFromList: itemRemuveFromList,
+      onRemoveFromList: id => dispatch(deleteItem(todoService, id)),
     },
     dispatch
   );

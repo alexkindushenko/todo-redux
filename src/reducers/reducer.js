@@ -15,17 +15,8 @@ const itemRemuveFromList = (id, state) => {
   };
 };
 
-const itemAddToList = (str, state) => {
-  const id = Math.floor(Math.random() * 1000);
-  const newList = [
-    ...state.list,
-    {
-      id,
-      label: str,
-      important: false,
-      done: false,
-    },
-  ];
+const itemAddSuccess = (data, state) => {
+  const newList = [...state.list, { ...data, id: data._id }];
   return {
     ...state,
     list: newList,
@@ -141,8 +132,8 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
-    case 'ITEM_ADD_TO_LIST':
-      return itemAddToList(action.payload, state);
+    case 'ITEM_ADD_SUCCESS':
+      return itemAddSuccess(action.payload, state);
 
     case 'ITEM_REMUVE_FROM_LIST':
       return itemRemuveFromList(action.payload, state);

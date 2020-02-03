@@ -44,8 +44,7 @@ export default class TodoService {
 
   getTodoList = async () => {
     try {
-      const data = await axios.get(this._apiBase);
-      return data;
+      return await axios.get(this._apiBase);
     } catch (error) {
       console.log('fetch ' + error);
     }
@@ -70,15 +69,31 @@ export default class TodoService {
         })
         .then(res => console.log(res.headers));
     } catch (error) {
-      console.log('send register ' + error);
+      console.log('register error ' + error);
     }
   };
 
   updateTodoItem = async data => {
     try {
-      return await axios.put(`${this._apiBase}:id`, data);
+      return await axios.put(`${this._apiBase}`, data);
     } catch (error) {
       console.log('update error ' + error);
+    }
+  };
+
+  deleteItem = async data => {
+    try {
+      return await axios.delete(`${this._apiBase}`, { params: data });
+    } catch (error) {
+      console.log('delete error ' + error);
+    }
+  };
+
+  addItem = async data => {
+    try {
+      return await axios.post(`${this._apiBase}`, data);
+    } catch (error) {
+      console.log('add error ' + error);
     }
   };
 }
