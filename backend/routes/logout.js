@@ -2,9 +2,9 @@ const { Router } = require('express');
 
 const router = Router();
 
-router.get('/logout', (req, res) => {
+router.patch('/', (req, res) => {
   req.session.destroy(() => {
-    res.redirect('/');
+    res.json({ isAuth: false });
   });
 });
 

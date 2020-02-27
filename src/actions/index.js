@@ -19,7 +19,7 @@ const fetchList = todoService => () => dispatch => {
   dispatch(listRequested());
   todoService
     .getTodoList()
-    .then(res => dispatch(listLoaded(res.data.todos)))
+    .then(res => dispatch(listLoaded(res.data)))
     .then(() => dispatch(updateDoneCount()))
     .catch(err => dispatch(listError(err)));
 };
@@ -57,6 +57,21 @@ const itemRemuveFromList = id => {
     payload: id,
   };
 };
+const deleteError = err => {
+  return {
+    type: 'DELETE_FAILURE',
+    payload: err,
+  };
+};
+const deleteItem = (todoService, id) => () => dispatch => {
+  todoService
+    .deleteItem(id)
+    .then(res => dispatch(itemRemuveFromList(res.data.id)))
+    .catch(err => {
+      console.log(err);
+      return dispatch(deleteError(err));
+    });
+};
 
 const updateImportantItem = id => {
   return {
@@ -64,12 +79,37 @@ const updateImportantItem = id => {
     payload: id,
   };
 };
+const updateImportantError = err => {
+  return {
+    type: ' IMPORTANT_FAILURE',
+    payload: err,
+  };
+};
+const importantItem = (todoService, id) => () => dispatch => {
+  todoService
+    .updateItem({ id, important: true })
+    .then(res => dispatch(updateImportantItem(res.data.id)))
+    .catch(err => dispatch(updateImportantError(err)));
+};
 
 const updateDoneItem = id => {
   return {
     type: 'UPDATE_DONE_ITEM',
     payload: id,
   };
+};
+const updateDoneError = err => {
+  return {
+    type: ' DONE_FAILURE',
+    payload: err,
+  };
+};
+const doneItem = (todoService, id) => () => dispatch => {
+  todoService
+    .updateItem({ id, done: true })
+    .then(res => dispatch(updateDoneItem(res.data.id)))
+    .then(() => dispatch(updateDoneCount()))
+    .catch(err => dispatch(updateDoneError(err)));
 };
 
 const updateDoneCount = () => {
@@ -123,58 +163,44 @@ const registerFormSubmitted = data => {
     payload: data,
   };
 };
-
 const registerFormError = err => {
   return {
     type: 'SEND_REGISTER_FORM_FAILURE',
     payload: err,
   };
 };
-
 const sendRegisterForm = (todoService, data) => () => dispatch => {
-  console.log(data);
   todoService
     .sendRegisterForm(data)
-    .then(res => dispatch(registerFormSubmitted(res)))
+    .then(res => dispatch(registerFormSubmitted(res.data)))
     .catch(err => dispatch(registerFormError(err)));
 };
-
-const deleteSuccess = res => {
+const userLogoutSuccess = res => {
   return {
-    type: 'DELETE_SUCCESS',
+    type: 'SEND_USER_LOGOUT_SUCCESS',
     payload: res,
   };
 };
-
-const deleteError = err => {
-  return {
-    type: 'DELETE_FAILURE',
-    payload: err,
-  };
-};
-
-const deleteItem = (todoService, id) => () => dispatch => {
+const userLogout = todoService => () => dispatch => {
   todoService
-    .deleteItem(id)
-    .then(res => dispatch(deleteSuccess(res)))
-    .then(() => dispatch(itemRemuveFromList(id)))
-    .catch(err => {
-      console.log(err);
-      return dispatch(deleteError(err));
-    });
+    .userLogout()
+    .then(res => dispatch(userLogoutSuccess(res)))
+    .catch(err => console.log(err));
 };
+
 export {
   fetchList,
   itemRemuveFromList,
   updateDoneCount,
-  updateImportantItem,
-  updateDoneItem,
+  importantItem,
+  doneItem,
+  deleteItem,
+  addItem,
   searchItemInList,
   filterListActive,
   filterListAll,
   filterListDone,
   sendLoginForm,
   sendRegisterForm,
-  deleteItem,
-  addItem,
+  userLogout,
 };

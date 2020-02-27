@@ -1,17 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 
 import './todo-list.css';
 import TodoListItem from '../todo-list-item';
 import { withTodoService } from '../hoc';
-import {
-  fetchList,
-  updateDoneItem,
-  updateImportantItem,
-  itemRemuveFromList,
-  deleteItem,
-} from '../../actions';
+import { fetchList, doneItem, importantItem, deleteItem } from '../../actions';
 import ErrorIndicator from '../error-indicator';
 import Spiner from '../spiner';
 import ErrorBoundry from '../error-boundry';
@@ -25,15 +20,20 @@ class TodoList extends React.Component {
       loading,
       list,
       error,
+      isAuth,
       onDoneItem,
       onImportantItem,
       onRemoveFromList,
     } = this.props;
+
     if (loading) {
       return <Spiner />;
     }
     if (error) {
       return <ErrorIndicator />;
+    }
+    if (!isAuth) {
+      return <Redirect to="/login" />;
     }
     return (
       <ErrorBoundry>
@@ -55,11 +55,12 @@ class TodoList extends React.Component {
   }
 }
 
-const mapStateToProps = ({ loading, list, error }) => {
+const mapStateToProps = ({ loading, list, error, isAuth }) => {
   return {
     loading,
     list,
     error,
+    isAuth,
   };
 };
 
@@ -67,8 +68,8 @@ const mapDispachToProps = (dispatch, { todoService }) => {
   return bindActionCreators(
     {
       fetchList: fetchList(todoService),
-      onImportantItem: updateImportantItem,
-      onDoneItem: updateDoneItem,
+      onImportantItem: id => dispatch(importantItem(todoService, id)),
+      onDoneItem: id => dispatch(doneItem(todoService, id)),
       onRemoveFromList: id => dispatch(deleteItem(todoService, id)),
     },
     dispatch

@@ -1,14 +1,9 @@
 const { Router } = require('express');
 const bcript = require('bcryptjs');
-const path = require('path');
 
 const UserSchema = require('../models/user');
 
 const router = Router();
-
-// router.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
-// });
 
 router.post('/', async (req, res) => {
   try {
@@ -24,15 +19,17 @@ router.post('/', async (req, res) => {
           if (err) {
             throw err;
           } else {
-            res.json({ homeRedirect: true });
+            console.log('login true');
+            res.json({ homeRedirect: true, isAuth: true });
           }
         });
       } else {
-        console.log('Error login');
-        res.redirect('/login');
+        console.log('Error password');
+        // res.redirect('/login');
+        res.end();
       }
     } else {
-      console.log('Error register');
+      console.log('User not found');
       res.redirect('/register');
     }
   } catch (error) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { withTodoService } from '../hoc';
-import { itemAddToList, addItem } from '../../actions';
+import { addItem } from '../../actions';
 
 import './item-add-form.css';
 

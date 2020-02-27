@@ -40,9 +40,13 @@ const updateDoneItem = (id, state) => {
   if (elem[0].done) {
     rateDone = -1;
   }
+  const newList = state.list.map(el =>
+    el.id === id ? { ...el, done: !el.done } : el
+  );
   return {
     ...state,
-    list: state.list.map(el => (el.id === id ? { ...el, done: !el.done } : el)),
+    list: newList,
+    generalList: newList,
     active: state.list.length - state.doneCount - rateDone,
     doneCount: state.list.filter(el => el.done).length + rateDone,
   };
@@ -93,6 +97,7 @@ const loginFormSubmitted = (res, state) => {
   return {
     ...state,
     homeRedirect: res.data.homeRedirect,
+    isAuth: res.data.isAuth,
   };
 };
 
@@ -104,6 +109,7 @@ const initialState = {
   active: 0,
   generalList: [],
   homeRedirect: false,
+  isAuth: true,
 };
 
 const reducer = (state = initialState, action) => {
@@ -117,13 +123,18 @@ const reducer = (state = initialState, action) => {
         loading: true,
         error: null,
         generalList: [],
+        isAuth: true,
       };
     case 'FETCH_LIST_SUCCESS':
+      console.log(action.payload);
       return {
-        list: action.payload,
+        ...state,
+        list: action.payload.todos || [],
         loading: false,
         error: null,
-        generalList: action.payload,
+        generalList: action.payload.todos,
+        isAuth: action.payload.isAuth,
+        homeRedirect: false,
       };
     case 'FETCH_LIST_FAILURE':
       return {
@@ -134,18 +145,15 @@ const reducer = (state = initialState, action) => {
       };
     case 'ITEM_ADD_SUCCESS':
       return itemAddSuccess(action.payload, state);
-
     case 'ITEM_REMUVE_FROM_LIST':
       return itemRemuveFromList(action.payload, state);
-
     case 'UPDATE_IMPORTANT_ITEM':
       return updateImportantItem(action.payload, state);
-
     case 'UPDATE_DONE_ITEM':
       return updateDoneItem(action.payload, state);
-
     case 'UPDATE_DONE_COUNT':
       return updateDoneCount(state);
+
     case 'SEARCH_ITEM_IN_LIST':
       return searchItemInList(action.payload, state);
     case 'FILTER_LIST_UPDATE':
@@ -154,9 +162,20 @@ const reducer = (state = initialState, action) => {
       return filterListActive(state);
     case 'FILTER_LIST_DONE':
       return filterListDone(state);
+
     case 'SEND_LOGIN_FORM_SUCCESS':
       return loginFormSubmitted(action.payload, state);
+    case 'SEND_REGISTER_FORM_SUCCESS':
+      return {
+        ...state,
+        homeRedirect: action.payload.homeRedirect,
+      };
 
+    case 'SEND_USER_LOGOUT_SUCCESS':
+      return {
+        ...state,
+        isAuth: action.payload.isAuth,
+      };
     default:
       return state;
   }

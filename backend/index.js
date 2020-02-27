@@ -17,47 +17,49 @@ const store = new MongoStore({
   uri: MONGODB_URI,
 });
 
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-  })
-);
+app.use(cors());
 app.use(
   session({
     secret: 'secret key11',
     resave: false,
     saveUninitialized: false,
-    store: store,
+    store,
   })
 );
 
-// app.use(csrf());
+app.use(csrf());
 app.use(cookieParser());
 app.use(express.json());
 
 app.use(async (req, res, next) => {
-  req.session.user = await UserSchema.findById('5e346abb0753612ab83d8300');
-  req.session.isAuthenticated = true;
+  // req.session.user = await UserSchema.findById('5e4525572a489b5e70a69ccf');
+  // req.session.isAuthenticated = true;
   // res.locals.isAuth = req.session.isAuthenticated;
   // res.locals.isAuth = true;
   // console.log(req.session.isAuthenticated);
   // console.log(req.session.user);
+  // console.log('isAUTHENTICATED', req.session.isAuthenticated);
+  // console.log('sessionID', req.sessionID);
+  // console.log('session', req.session);
 
   next();
 });
-// app.all('*', function(req, res, next) {
-//   res.cookie('XSRF-TOKEN', req.csrfToken());
-//   next();
-// });
+app.all('*', function(req, res, next) {
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  next();
+});
+app.use(express.static(path.join(__dirname, 'build')));
 
-// app.get('/', function(req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
-// app.get('/*', function(req, res) {
-//   res.sendFile(path.join(__dirname, 'build', 'index.html'));
-// });
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
+
 app.use('/', require('./routes/home'));
 app.use('/login', require('./routes/login'));
+app.use('/logout', require('./routes/logout'));
 app.use('/register', require('./routes/register'));
 
 const start = async () => {

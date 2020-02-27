@@ -1,7 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 // import axios from 'axios';
 
 import { withTodoService } from '../hoc';
@@ -22,7 +23,7 @@ class RegisterPage extends React.Component {
   // }
 
   render() {
-    const { sendRegisterForm } = this.props;
+    const { sendRegisterForm, homeRedirect } = this.props;
     const { emailVal, password1, password2 } = this.state;
 
     const onEmailInput = e => {
@@ -53,65 +54,73 @@ class RegisterPage extends React.Component {
         this.setState({ redirect: true });
       }
     };
+    if (homeRedirect) {
+      return <Redirect to="/" />;
+    } else {
+      return (
+        <div className="todo-app text-center">
+          <nav className="nav nav-pills nav-fill">
+            <Link to="/login" className="nav-item nav-link">
+              Login
+            </Link>
+            <Link to="/register" className="nav-item nav-link  active">
+              Registration
+            </Link>
+          </nav>
 
-    return (
-      <div className="todo-app text-center">
-        <nav className="nav nav-pills nav-fill">
-          <Link to="/login" className="nav-item nav-link">
-            Login
-          </Link>
-          <Link to="/register" className="nav-item nav-link  active">
-            Registration
-          </Link>
-        </nav>
-
-        <form id="registerForm">
-          <div className="form-group">
-            <label htmlFor="registerEmail">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              id="registerEmail"
-              aria-describedby="emailHelp"
-              value={emailVal}
-              onChange={onEmailInput}
-            />
-            <small id="emailHelp" className="form-text text-muted">
-              We'll never share your email with anyone else.
-            </small>
-          </div>
-          <div className="form-group">
-            <label htmlFor="registerPassword1">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="registerPassword1"
-              value={password1}
-              onChange={onPasswInput1}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="registerPassword2">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              id="registerPassword2"
-              value={password2}
-              onChange={onPasswInput2}
-            />
-          </div>
-          <button
-            type="submit"
-            className="btn btn-secondary float-right"
-            onClick={onRegisterSubmit}
-          >
-            Submit
-          </button>
-        </form>
-      </div>
-    );
+          <form id="registerForm">
+            <div className="form-group">
+              <label htmlFor="registerEmail">Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                id="registerEmail"
+                aria-describedby="emailHelp"
+                value={emailVal}
+                onChange={onEmailInput}
+              />
+              <small id="emailHelp" className="form-text text-muted">
+                We'll never share your email with anyone else.
+              </small>
+            </div>
+            <div className="form-group">
+              <label htmlFor="registerPassword1">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="registerPassword1"
+                value={password1}
+                onChange={onPasswInput1}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="registerPassword2">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                id="registerPassword2"
+                value={password2}
+                onChange={onPasswInput2}
+              />
+            </div>
+            <button
+              type="submit"
+              className="btn btn-secondary float-right"
+              onClick={onRegisterSubmit}
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      );
+    }
   }
 }
+const mapStateToProps = ({ homeRedirect }) => {
+  return {
+    homeRedirect,
+  };
+};
 
 const mapDispachToProps = (dispatch, { todoService }) => {
   return bindActionCreators(
@@ -124,7 +133,7 @@ const mapDispachToProps = (dispatch, { todoService }) => {
 
 export default withTodoService()(
   connect(
-    null,
+    mapStateToProps,
     mapDispachToProps
   )(RegisterPage)
 );

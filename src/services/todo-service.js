@@ -44,7 +44,7 @@ export default class TodoService {
 
   getTodoList = async () => {
     try {
-      return await axios.get(this._apiBase);
+      return await axios.patch(this._apiBase);
     } catch (error) {
       console.log('fetch ' + error);
     }
@@ -60,20 +60,13 @@ export default class TodoService {
 
   sendRegisterForm = async data => {
     try {
-      return axios
-        .post(`${this._apiBase}register`, data, {
-          headers: {
-            'content-Type': 'application/json',
-            'XSRF-TOKEN': `${this._getCookie('XSRF-TOKEN')}`,
-          },
-        })
-        .then(res => console.log(res.headers));
+      return await axios.post(`${this._apiBase}register`, data);
     } catch (error) {
       console.log('register error ' + error);
     }
   };
 
-  updateTodoItem = async data => {
+  updateItem = async data => {
     try {
       return await axios.put(`${this._apiBase}`, data);
     } catch (error) {
@@ -94,6 +87,13 @@ export default class TodoService {
       return await axios.post(`${this._apiBase}`, data);
     } catch (error) {
       console.log('add error ' + error);
+    }
+  };
+  userLogout = async () => {
+    try {
+      return await axios.patch(`${this._apiBase}logout`);
+    } catch (error) {
+      console.log('logout ' + error);
     }
   };
 }

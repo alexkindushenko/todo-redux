@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link, Redirect } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 import { withTodoService } from '../hoc';
 import { sendLoginForm } from '../../actions';
 
@@ -15,9 +15,9 @@ class LoginPage extends React.Component {
     redirect: false,
   };
 
-  componentDidMount() {
-    axios.get('http://localhost:8888/');
-  }
+  // componentDidMount() {
+  //   axios.get('http://localhost:8888/');
+  // }
 
   render() {
     const { sendLoginForm, homeRedirect } = this.props;
