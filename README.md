@@ -16,6 +16,6 @@ In this folder >> npm start
 
 Change directory / backend
 
-Start Node server >> npm dev
+Start Node server >> npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
