@@ -2,11 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const session = require('express-session');
-const csrf = require('csurf');
 const MongoStore = require('connect-mongodb-session')(session);
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const path = require('path');
+
+const UserSchema = require('./models/user');
 
 const PORT = process.env.port || 8888;
 const MONGODB_URI = 'mongodb://localhost:27017/todo-mern';
@@ -26,23 +26,29 @@ app.use(
 );
 
 app.disable('x-powered-by');
-app.use(csrf());
 app.use(cookieParser());
 app.use(express.json());
 
-app.all('*', function(req, res, next) {
-  res.cookie('XSRF-TOKEN', req.csrfToken());
+app.use(async (req, res, next) => {
+  req.session.user = await UserSchema.findById('5e4525572a489b5e70a69ccf');
+  req.session.isAuthenticated = true;
   next();
 });
-app.use(express.static(path.join(__dirname, 'build')));
-
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+app.get('/', (req, res) => {
+  if (!req.session.isAuthenticated) {
+    res.json({ isAuth: false });
+  } else {
+    res.json({
+      todos: req.session.user.todos.map(el => ({
+        done: el.done,
+        important: el.important,
+        id: el._id,
+        label: el.label,
+      })),
+      isAuth: true,
+    });
+  }
 });
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
 app.use('/', require('./routes/home'));
 app.use('/login', require('./routes/login'));
 app.use('/logout', require('./routes/logout'));

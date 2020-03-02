@@ -46,7 +46,7 @@ export default class TodoService {
     try {
       return await axios.patch(this._apiBase);
     } catch (error) {
-      console.log('fetch ' + error);
+      return error;
     }
   };
 
@@ -54,7 +54,8 @@ export default class TodoService {
     try {
       return await axios.post(`${this._apiBase}login`, data);
     } catch (error) {
-      console.log('send login ' + error);
+      console.log(error);
+      return error;
     }
   };
 
@@ -63,6 +64,7 @@ export default class TodoService {
       return await axios.post(`${this._apiBase}register`, data);
     } catch (error) {
       console.log('register error ' + error);
+      return error;
     }
   };
 

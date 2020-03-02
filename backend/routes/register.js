@@ -1,15 +1,10 @@
 const { Router } = require('express');
 const bcript = require('bcryptjs');
-const path = require('path');
 
 const UserSchema = require('../models/user');
 const defaultTodos = require('../libs/default-todos');
 const router = Router();
 
-// router.get('/*', (req, res) => {
-//   // res.json({ isAuth: false });
-//   res.sendFile(path.join(__dirname, '../', 'build', 'index.html'));
-// });
 router.post('/', async (req, res) => {
   const { email, password } = req.body;
   const candidate = await UserSchema.findOne({ email });
@@ -40,7 +35,9 @@ router.post('/', async (req, res) => {
     }
     res.json({ homeRedirect: true });
   } catch (error) {
-    console.log(error);
+    res
+      .status(404)
+      .json({ message: 'Incorrect data. Check the data entered.' });
   }
 });
 module.exports = router;

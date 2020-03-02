@@ -96,8 +96,9 @@ const filterListActive = state => {
 const loginFormSubmitted = (res, state) => {
   return {
     ...state,
-    homeRedirect: res.data.homeRedirect,
-    isAuth: res.data.isAuth,
+    homeRedirect: res.data.homeRedirect || false,
+    isAuth: res.data.isAuth || false,
+    errorLogin: res.data.message || null,
   };
 };
 
@@ -110,6 +111,8 @@ const initialState = {
   generalList: [],
   homeRedirect: false,
   isAuth: true,
+  errorLogin: null,
+  errorRegister: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -126,7 +129,6 @@ const reducer = (state = initialState, action) => {
         isAuth: true,
       };
     case 'FETCH_LIST_SUCCESS':
-      console.log(action.payload);
       return {
         ...state,
         list: action.payload.todos || [],
@@ -143,6 +145,7 @@ const reducer = (state = initialState, action) => {
         loading: false,
         error: action.payload,
       };
+
     case 'ITEM_ADD_SUCCESS':
       return itemAddSuccess(action.payload, state);
     case 'ITEM_REMUVE_FROM_LIST':
@@ -165,16 +168,28 @@ const reducer = (state = initialState, action) => {
 
     case 'SEND_LOGIN_FORM_SUCCESS':
       return loginFormSubmitted(action.payload, state);
+    case 'SEND_LOGIN_FORM_FAILURE':
+      return {
+        ...state,
+        errorLogin: 'ERR_INTERNET_DISCONNECTED',
+      };
     case 'SEND_REGISTER_FORM_SUCCESS':
       return {
         ...state,
         homeRedirect: action.payload.homeRedirect,
+      };
+    case 'SEND_REGISTER_FORM_FAILURE':
+      return {
+        ...state,
+        errorRegister: 'ERR_INTERNET_DISCONNECTED',
       };
 
     case 'SEND_USER_LOGOUT_SUCCESS':
       return {
         ...state,
         isAuth: action.payload.isAuth,
+        errorLogin: null,
+        errorRegister: null,
       };
     default:
       return state;

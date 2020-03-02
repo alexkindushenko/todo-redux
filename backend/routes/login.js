@@ -19,18 +19,15 @@ router.post('/', async (req, res) => {
           if (err) {
             throw err;
           } else {
-            console.log('login true');
             res.json({ homeRedirect: true, isAuth: true });
           }
         });
       } else {
-        console.log('Error password');
-        // res.redirect('/login');
-        res.end();
+        console.log('err passw');
+        res.json({ message: 'Incorrect data. Check the data entered.' });
       }
     } else {
-      console.log('User not found');
-      res.redirect('/register');
+      res.json({ message: 'Incorrect data. Check the data entered.' });
     }
   } catch (error) {
     console.log(error);

@@ -1,11 +1,23 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
 ## Getting Started
+
+Start MongoDB on port 27017
+
+Change directory / backend
+
+Start Node server >> npm run start
 
 In the project directory, you can run:
 
-### `npm start`
+Open [http://localhost:8888](http://localhost:8888) to view it in the browser.
 
-Runs the app in the development mode.<br />
+## Development Started
+
+Start MongoDB on port 27017
+
+In this folder >> npm start
+
+Change directory / backend
+
+Start Node server >> npm dev
+
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-

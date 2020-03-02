@@ -3,8 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-// import axios from 'axios';
-
 import { withTodoService } from '../hoc';
 import { sendRegisterForm } from '../../actions';
 
@@ -15,15 +13,9 @@ class RegisterPage extends React.Component {
     password2: '',
     redirect: false,
   };
-  // componentDidMount() {
-  //   // (function() {
-  //   //   document.cookie = 'XSRF-TOKEN=; expires=Thu, 01 Jan 2020 00:00:00 GMT';
-  //   // })();
-  //   axios.get('http://localhost:8888/register').then(res => console.log(res));
-  // }
 
   render() {
-    const { sendRegisterForm, homeRedirect } = this.props;
+    const { sendRegisterForm, homeRedirect, errorRegister } = this.props;
     const { emailVal, password1, password2 } = this.state;
 
     const onEmailInput = e => {
@@ -35,17 +27,7 @@ class RegisterPage extends React.Component {
     const onPasswInput2 = e => {
       this.setState({ password2: e.target.value });
     };
-    // const _getCookie = name => {
-    //   let matches = document.cookie.match(
-    //     new RegExp(
-    //       '(?:^|; )' +
-    //         name.replace(/([.$?*|{}()\\]\\\/\+^])/g, '\\$1') +
-    //         '=([^;]*)'
-    //     )
-    //   );
-    //   console.log(decodeURIComponent(matches[1]));
-    //   return matches ? decodeURIComponent(matches[1]) : undefined;
-    // };
+
     const onRegisterSubmit = e => {
       e.preventDefault();
 
@@ -103,6 +85,8 @@ class RegisterPage extends React.Component {
                 onChange={onPasswInput2}
               />
             </div>
+            <p>{errorRegister}</p>
+
             <button
               type="submit"
               className="btn btn-secondary float-right"
@@ -116,9 +100,10 @@ class RegisterPage extends React.Component {
     }
   }
 }
-const mapStateToProps = ({ homeRedirect }) => {
+const mapStateToProps = ({ homeRedirect, errorRegister }) => {
   return {
     homeRedirect,
+    errorRegister,
   };
 };
 

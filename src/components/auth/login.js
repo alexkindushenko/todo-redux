@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Link, Redirect } from 'react-router-dom';
-// import axios from 'axios';
 import { withTodoService } from '../hoc';
 import { sendLoginForm } from '../../actions';
 
@@ -15,12 +14,8 @@ class LoginPage extends React.Component {
     redirect: false,
   };
 
-  // componentDidMount() {
-  //   axios.get('http://localhost:8888/');
-  // }
-
   render() {
-    const { sendLoginForm, homeRedirect } = this.props;
+    const { sendLoginForm, homeRedirect, errorLogin } = this.props;
     const { emailVal, password } = this.state;
 
     const onEmailInput = e => {
@@ -69,6 +64,7 @@ class LoginPage extends React.Component {
                 onChange={onPasswInput1}
               />
             </div>
+            <p>{errorLogin}</p>
             <button
               type="submit"
               className="btn btn-secondary float-right"
@@ -83,9 +79,10 @@ class LoginPage extends React.Component {
   }
 }
 
-const mapStateToProps = ({ homeRedirect }) => {
+const mapStateToProps = ({ homeRedirect, errorLogin }) => {
   return {
     homeRedirect,
+    errorLogin,
   };
 };
 
