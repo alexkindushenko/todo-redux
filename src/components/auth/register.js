@@ -12,11 +12,20 @@ class RegisterPage extends React.Component {
     password1: '',
     password2: '',
     redirect: false,
+    classEmail: 'form-control',
+    classPassword: 'form-control',
   };
 
   render() {
     const { sendRegisterForm, homeRedirect, errorRegister } = this.props;
-    const { emailVal, password1, password2 } = this.state;
+    const {
+      emailVal,
+      password1,
+      password2,
+      classEmail,
+      classPassword,
+    } = this.state;
+    const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const onEmailInput = e => {
       this.setState({ emailVal: e.target.value });
@@ -31,9 +40,16 @@ class RegisterPage extends React.Component {
     const onRegisterSubmit = e => {
       e.preventDefault();
 
-      if (emailVal && password1 && password1 === password2) {
+      if (emailRegexp.test(emailVal) && password1 && password1 === password2) {
         sendRegisterForm({ email: emailVal, password: password1 });
         this.setState({ redirect: true });
+      } else {
+        if (!emailRegexp.test(emailVal))
+          this.setState({ classEmail: 'form-control error-validate' });
+        else this.setState({ classEmail: 'form-control' });
+        if (password1.length < 4)
+          this.setState({ classPassword: 'form-control error-validate' });
+        else this.setState({ classPassword: 'form-control' });
       }
     };
     if (homeRedirect) {
@@ -55,7 +71,7 @@ class RegisterPage extends React.Component {
               <label htmlFor="registerEmail">Email address</label>
               <input
                 type="email"
-                className="form-control"
+                className={classEmail}
                 id="registerEmail"
                 aria-describedby="emailHelp"
                 value={emailVal}
@@ -69,7 +85,7 @@ class RegisterPage extends React.Component {
               <label htmlFor="registerPassword1">Password</label>
               <input
                 type="password"
-                className="form-control"
+                className={classPassword}
                 id="registerPassword1"
                 value={password1}
                 onChange={onPasswInput1}
@@ -79,7 +95,7 @@ class RegisterPage extends React.Component {
               <label htmlFor="registerPassword2">Password</label>
               <input
                 type="password"
-                className="form-control"
+                className={classPassword}
                 id="registerPassword2"
                 value={password2}
                 onChange={onPasswInput2}
