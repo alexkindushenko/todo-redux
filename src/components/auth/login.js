@@ -12,11 +12,14 @@ class LoginPage extends React.Component {
     emailVal: '',
     password1: '',
     redirect: false,
+    classEmail: 'form-control',
+    classPassword: 'form-control',
   };
 
   render() {
     const { sendLoginForm, homeRedirect, errorLogin } = this.props;
-    const { emailVal, password } = this.state;
+    const { emailVal, password, classEmail, classPassword } = this.state;
+    const emailRegexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     const onEmailInput = e => {
       this.setState({ emailVal: e.target.value });
@@ -27,8 +30,15 @@ class LoginPage extends React.Component {
     const onLoginSubmit = e => {
       e.preventDefault();
 
-      if (emailVal && password) {
+      if (emailRegexp.test(emailVal) && password.length >= 4) {
         sendLoginForm({ email: emailVal, password });
+      } else {
+        if (!emailRegexp.test(emailVal))
+          this.setState({ classEmail: 'form-control error-validate' });
+        else this.setState({ classEmail: 'form-control' });
+        if (password.length < 4)
+          this.setState({ classPassword: 'form-control error-validate' });
+        else this.setState({ classPassword: 'form-control' });
       }
     };
     if (homeRedirect) {
@@ -44,12 +54,12 @@ class LoginPage extends React.Component {
               Registration
             </Link>
           </nav>
-          <form id="loginForm">
+          <form id="loginForm" noValidate>
             <div className="form-group">
               <label htmlFor="loginEmail">Email address</label>
               <input
                 type="email"
-                className="form-control"
+                className={classEmail}
                 id="loginEmail"
                 aria-describedby="emailHelp"
                 onChange={onEmailInput}
@@ -59,7 +69,7 @@ class LoginPage extends React.Component {
               <label htmlFor="loginPassword">Password</label>
               <input
                 type="password"
-                className="form-control"
+                className={classPassword}
                 id="loginPassword"
                 onChange={onPasswInput1}
               />
