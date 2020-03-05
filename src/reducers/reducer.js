@@ -177,6 +177,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         homeRedirect: action.payload.homeRedirect,
+        errorRegister: action.payload.message,
       };
     case 'SEND_REGISTER_FORM_FAILURE':
       return {

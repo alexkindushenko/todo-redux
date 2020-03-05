@@ -26,7 +26,6 @@ router.patch('/', (req, res) => {
 
 router.post('/', async (req, res) => {
   const user = await UserSchema.findById(req.session.user._id);
-  console.log(req.body.str);
   const todo = {
     label: req.body.str,
     important: false,

@@ -3,16 +3,16 @@ const bcript = require('bcryptjs');
 
 const UserSchema = require('../models/user');
 const defaultTodos = require('../libs/default-todos');
+const isValid = require('../midlevare/isValid');
+
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.post('/', isValid, async (req, res) => {
   const { email, password } = req.body;
   const candidate = await UserSchema.findOne({ email });
   try {
     if (candidate) {
-      console.log('User foud');
-
-      res.redirect('/login');
+      return res.status(200).json({ message: 'E-mail already in use.' });
     } else {
       const hashPassword = await bcript.hash(password, 10);
       const user = new UserSchema({
@@ -27,7 +27,6 @@ router.post('/', async (req, res) => {
         if (err) {
           throw err;
         } else {
-          console.log('login true');
           res.json({ homeRedirect: true });
         }
       });
@@ -35,9 +34,7 @@ router.post('/', async (req, res) => {
     }
     res.json({ homeRedirect: true });
   } catch (error) {
-    res
-      .status(404)
-      .json({ message: 'Incorrect data. Check the data entered.' });
+    res.json({ message: error });
   }
 });
 module.exports = router;

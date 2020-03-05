@@ -10,8 +10,7 @@ import './auth.css';
 class LoginPage extends React.Component {
   state = {
     emailVal: '',
-    password1: '',
-    redirect: false,
+    password: '',
     classEmail: 'form-control',
     classPassword: 'form-control',
   };
@@ -32,6 +31,10 @@ class LoginPage extends React.Component {
 
       if (emailRegexp.test(emailVal) && password.length >= 4) {
         sendLoginForm({ email: emailVal, password });
+        this.setState({
+          classEmail: 'form-control',
+          classPassword: 'form-control',
+        });
       } else {
         if (!emailRegexp.test(emailVal))
           this.setState({ classEmail: 'form-control error-validate' });

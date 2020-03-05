@@ -5,7 +5,6 @@ const session = require('express-session');
 const csrf = require('csurf');
 const MongoStore = require('connect-mongodb-session')(session);
 const cookieParser = require('cookie-parser');
-const cors = require('cors');
 const path = require('path');
 
 const PORT = process.env.port || 8888;
@@ -15,7 +14,6 @@ const store = new MongoStore({
   uri: MONGODB_URI,
 });
 
-app.use(cors());
 app.use(
   session({
     secret: 'secret key11',

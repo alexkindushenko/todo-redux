@@ -2,10 +2,11 @@ const { Router } = require('express');
 const bcript = require('bcryptjs');
 
 const UserSchema = require('../models/user');
+const isValid = require('../midlevare/isValid');
 
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.post('/', isValid, async (req, res) => {
   try {
     const { email, password } = req.body;
     const candidate = await UserSchema.findOne({ email });
@@ -19,15 +20,14 @@ router.post('/', async (req, res) => {
           if (err) {
             throw err;
           } else {
-            res.json({ homeRedirect: true, isAuth: true });
+            return res.json({ homeRedirect: true, isAuth: true });
           }
         });
       } else {
-        console.log('err passw');
-        res.json({ message: 'Incorrect data. Check the data entered.' });
+        return res.json({ message: 'Password confirmation is incorrect.' });
       }
     } else {
-      res.json({ message: 'Incorrect data. Check the data entered.' });
+      return res.json({ message: 'E-mail not found.' });
     }
   } catch (error) {
     console.log(error);

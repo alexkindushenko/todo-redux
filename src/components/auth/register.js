@@ -11,7 +11,6 @@ class RegisterPage extends React.Component {
     emailVal: '',
     password1: '',
     password2: '',
-    redirect: false,
     classEmail: 'form-control',
     classPassword: 'form-control',
   };
@@ -40,14 +39,21 @@ class RegisterPage extends React.Component {
     const onRegisterSubmit = e => {
       e.preventDefault();
 
-      if (emailRegexp.test(emailVal) && password1 && password1 === password2) {
+      if (
+        emailRegexp.test(emailVal) &&
+        password1.length >= 4 &&
+        password1 === password2
+      ) {
         sendRegisterForm({ email: emailVal, password: password1 });
-        this.setState({ redirect: true });
+        this.setState({
+          classEmail: 'form-control',
+          classPassword: 'form-control',
+        });
       } else {
         if (!emailRegexp.test(emailVal))
           this.setState({ classEmail: 'form-control error-validate' });
         else this.setState({ classEmail: 'form-control' });
-        if (password1.length < 4)
+        if (password1.length < 4 || password1 !== password2)
           this.setState({ classPassword: 'form-control error-validate' });
         else this.setState({ classPassword: 'form-control' });
       }
